@@ -57,7 +57,7 @@
                     </div>
                     <div class="input-field col s3">
                         <input disabled value=" " id="avg" type="text" class="validate">
-                        <label for="disabled">Promedio</label>
+                        <label for="disabled">Promedio/Media</label>
                     </div>
                     <div class="input-field col s3">
                         <input disabled value=" " id="max" type="text" class="validate">
@@ -68,37 +68,29 @@
                         <label for="disabled">Min</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s3">
+                        <input disabled value=" " id="media" type="text" class="validate">
+                        <label for="disabled">Mediana</label>
+                    </div>
+                </div>
             </form>
         </div>
-        <!--<div class="row">
-            <table>
-                <thead>
+        <div class="row">
+            <table id="table">
+                <thead id="table-head">
                     <tr>
-                        <th>Name</th>
-                        <th>Item Name</th>
-                        <th>Item Price</th>
+                        <th>xi</th>
+                        <th>Frecuencia Absoluta</th>
+                        <th>Frecuencia Absoluta Acumulada</th>
+                        <th>Frecuencia Relativa</th>
+                        <th>Frecuencia Relativa Acumulada</th>
                     </tr>
                 </thead>
-
-                <tbody>
-                    <tr>
-                        <td>Alvin</td>
-                        <td>Eclair</td>
-                        <td>$0.87</td>
-                    </tr>
-                    <tr>
-                        <td>Alan</td>
-                        <td>Jellybean</td>
-                        <td>$3.76</td>
-                    </tr>
-                    <tr>
-                        <td>Jonathan</td>
-                        <td>Lollipop</td>
-                        <td>$7.00</td>
-                    </tr>
+                <tbody id="table-body">
                 </tbody>
-            </table>
-        </div>-->
+            </table><br /><br />
+        </div>
     </div>
 </body>
 <script>
@@ -148,7 +140,8 @@
         let lowMiddle = Math.floor((arr.length - 1) / 2);
         let highMiddle = Math.ceil((arr.length - 1) / 2);
         let median = (arr[lowMiddle] + arr[highMiddle]) / 2;
-        console.log(median)
+        //console.log(median)
+        document.getElementById('media').value = median;
 
         //max & min
         var max = Math.max(...arr);
@@ -158,8 +151,34 @@
         document.getElementById('min').value = min;
         //console.log(min);
 
+        //contar valores
+        var values = [],
+            prev;
+        var counts = [];
+        var sumcounts = [];
+        arr.sort();
+        //XI & FA
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i] !== prev) {
+                values.push(arr[i]);
+                counts.push(1);
+            } else {
+                counts[counts.length - 1]++;
+            }
+            prev = arr[i];
+        }
+        //FREC. ABS.AC.
+        sumcounts = counts.map((elem, index) => counts.slice(0, index + 1).reduce((a, b) => a + b));
+        console.log(sumcounts);
+        //limpia tabla
+        $("#table-body").children("tr").remove();
+        //CREA TABLA
+        for (i = 0; i < values.length; i++) {
+            //console.log(values[i]);
 
-
+            var tr = '<tr><td>' + values[i] + '</td><td>' + counts[i] + '</td><td>' + sumcounts[i] + '</td></tr>'
+            $("#table-body").append(tr)
+        }
     }
 </script></html>
 
