@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TAREA 2 - Métodos</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <nav class="light-blue lighten-1">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo center">Tarea 2</a>
+        </div>
+    </nav>
+    <div class="section no-pad-bot">
+        <div class="container"><br /><br />
+            <div class="row">
+                <form>
+                    <div class="input-field col s12">
+                        <input id="tamanio" type="text" class="validate">
+                        <label for="tamanio">Tamaño de la Muestra</label>
+
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="valores" class="materialize-textarea" data-length="120"></textarea>
+                            <label for="valores">Ingrese los valores (deben estar separados por , )</label>
+                        </div>
+                    </div>
+                    <div id="error" style="color: red;font-size: 16px; font-weight: bold; text-align: center;"></div><br />
+                    <button class="btn waves-effect waves-light" onclick="event.preventDefault(); bubblesort()">Enviar
+                    </button>
+                </form><br /><br />
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <form>
+                <div class="row">
+                    <div class="input-field col s3">
+                        <input disabled value=" " id="sum" type="text" class="validate">
+                        <label for="disabled">Suma</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input disabled value=" " id="avg" type="text" class="validate">
+                        <label for="disabled">Promedio</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input disabled value=" " id="max" type="text" class="validate">
+                        <label for="disabled">Max</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input disabled value=" " id="min" type="text" class="validate">
+                        <label for="disabled">Min</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--<div class="row">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Item Name</th>
+                        <th>Item Price</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Alvin</td>
+                        <td>Eclair</td>
+                        <td>$0.87</td>
+                    </tr>
+                    <tr>
+                        <td>Alan</td>
+                        <td>Jellybean</td>
+                        <td>$3.76</td>
+                    </tr>
+                    <tr>
+                        <td>Jonathan</td>
+                        <td>Lollipop</td>
+                        <td>$7.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>-->
+    </div>
+</body>
+<script>
+    function bubblesort() {
+        //declaraciones
+        var arr = [];
+
+        //se obtiene el tamaño de la muestra y se declara en el array
+        let tamanio = document.getElementById('tamanio').value;
+        arr.length = tamanio;
+        //console.log(arr.length)
+
+        //se obtienen los valores, se separan y combierten a números
+        let valores = document.getElementById('valores').value;
+        ar = valores.split(',');
+        //console.log(ar);
+        var a = ar.map(Number);
+        //console.log(a);
+
+        //se comprueba que los valores ingresados sean del tamaño necesitado, sino solo se usan los que entren en el tamaño
+        if (a.length > tamanio) {
+            document.getElementById('error').innerHTML = 'Valores ingresados superan el tamaño de la muestra, solo se usarán los valores solicitados.';
+            arr.length = tamanio;
+        }
+
+        //se agregan al array
+        for (var i = 0; i < arr.length; i++) {
+            arr[i] = a[i];
+        }
+        console.log(arr)
+
+        //se suman los valores
+        let sum = 0;
+        arr.forEach(function(numero) {
+            sum += numero;
+        })
+        //console.log(sum);
+        document.getElementById('sum').value = sum;
+
+        //average
+        let avg = sum / arr.length;
+        document.getElementById('avg').value = avg;
+        //console.log(avg);
+
+        //media
+        arr.sort((a, b) => a - b);
+        let lowMiddle = Math.floor((arr.length - 1) / 2);
+        let highMiddle = Math.ceil((arr.length - 1) / 2);
+        let median = (arr[lowMiddle] + arr[highMiddle]) / 2;
+        console.log(median)
+
+        //max & min
+        var max = Math.max(...arr);
+        //console.log(max);
+        document.getElementById('max').value = max;
+        var min = Math.min(...arr);
+        document.getElementById('min').value = min;
+        //console.log(min);
+
+
+
+    }
+</script></html>
+
