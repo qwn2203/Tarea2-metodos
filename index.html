@@ -75,6 +75,7 @@
                     </div>
                 </div>
             </form>
+            <div id="fr" style="color: skyblue;font-size: 16px; font-weight: bold; text-align: center;"></div><br />
         </div>
         <div class="row">
             <table id="table">
@@ -114,6 +115,8 @@
         if (a.length > tamanio) {
             document.getElementById('error').innerHTML = 'Valores ingresados superan el tamaño de la muestra, solo se usarán los valores solicitados.';
             arr.length = tamanio;
+        } else {
+            document.getElementById('error').innerHTML = '';
         }
 
         //se agregan al array
@@ -156,6 +159,8 @@
             prev;
         var counts = [];
         var sumcounts = [];
+        var fr = [];
+        var fra = [];
         arr.sort();
         //XI & FA
         for (i = 0; i < arr.length; i++) {
@@ -167,16 +172,33 @@
             }
             prev = arr[i];
         }
+
         //FREC. ABS.AC.
         sumcounts = counts.map((elem, index) => counts.slice(0, index + 1).reduce((a, b) => a + b));
-        console.log(sumcounts);
+        //console.log(sumcounts);
+
         //limpia tabla
         $("#table-body").children("tr").remove();
+        document.getElementById('fr').innerHTML = '';
+
+        //FREC. REL.
+        for (i = 0; i < values.length; i++) {
+            let fi = values[i] / tamanio;
+            let f = parseFloat(fi.toFixed(2));
+            fr.push(f);
+            document.getElementById('fr').innerHTML = 'Los valores de Frecuencia Relativa y Frecuencia Relativa Acumulada se han redondeado a 2 decimales.';
+        }
+        //FREC. REL. ABS.
+        fra = fr.map((elem, index) => fr.slice(0, index + 1).reduce((a, b) => a + b));
+        fra.map(function(b) {
+            return parseFloat(b).toFixed(1)
+        })
+        //fra = parseFloat(fra);
+        console.log(fra);
+
         //CREA TABLA
         for (i = 0; i < values.length; i++) {
-            //console.log(values[i]);
-
-            var tr = '<tr><td>' + values[i] + '</td><td>' + counts[i] + '</td><td>' + sumcounts[i] + '</td></tr>'
+            var tr = '<tr style="text-align: center;"><td>' + values[i] + '</td><td>' + counts[i] + '</td><td>' + sumcounts[i] + '</td><td>' + fr[i] + '</td><td>' + fra[i] + '</td></tr>';
             $("#table-body").append(tr)
         }
     }
