@@ -1,3 +1,7 @@
+<!-- Integrantes:
+    Alma Ayaquica - A01324264
+    Theo Salvador Pérez Tovar - A01328274-->
+
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -73,6 +77,18 @@
                         <input disabled value=" " id="media" type="text" class="validate">
                         <label for="disabled">Mediana</label>
                     </div>
+                    <div class="input-field col s3">
+                        <input disabled value=" " id="varianza" type="text" class="validate">
+                        <label for="disabled">Varianza</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input disabled value=" " id="desvEstandar" type="text" class="validate">
+                        <label for="disabled">Desviación Estándar</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input disabled value=" " id="moda" type="text" class="validate">
+                        <label for="disabled">Moda</label>
+                    </div>
                 </div>
             </form>
             <div id="fr" style="color: skyblue;font-size: 16px; font-weight: bold; text-align: center;"></div><br />
@@ -92,6 +108,8 @@
                 </tbody>
             </table><br /><br />
         </div>
+
+        
     </div>
 </body>
 <script>
@@ -102,105 +120,141 @@
         //se obtiene el tamaño de la muestra y se declara en el array
         let tamanio = document.getElementById('tamanio').value;
         arr.length = tamanio;
+
+        if(parseInt(tamanio) < 3 || parseInt(tamanio) > 16777215){
+            document.getElementById('error').innerHTML = 'El tamaño de la muestra deberia ser entre 3 y 16777215. Favor de corregirlo';
+        } else {
+            doMath()
+        }
         //console.log(arr.length)
 
-        //se obtienen los valores, se separan y combierten a números
-        let valores = document.getElementById('valores').value;
-        ar = valores.split(',');
-        //console.log(ar);
-        var a = ar.map(Number);
-        //console.log(a);
+        function doMath(){
+            //se obtienen los valores, se separan y combierten a números
+            let valores = document.getElementById('valores').value;
+            ar = valores.split(',');
+            //console.log(ar);
+            var a = ar.map(Number);
+            //console.log(a);
 
-        //se comprueba que los valores ingresados sean del tamaño necesitado, sino solo se usan los que entren en el tamaño
-        if (a.length > tamanio) {
-            document.getElementById('error').innerHTML = 'Valores ingresados superan el tamaño de la muestra, solo se usarán los valores solicitados.';
-            arr.length = tamanio;
-        } else {
-            document.getElementById('error').innerHTML = '';
-        }
-
-        //se agregan al array
-        for (var i = 0; i < arr.length; i++) {
-            arr[i] = a[i];
-        }
-        console.log(arr)
-
-        //se suman los valores
-        let sum = 0;
-        arr.forEach(function(numero) {
-            sum += numero;
-        })
-        //console.log(sum);
-        document.getElementById('sum').value = sum;
-
-        //average
-        let avg = sum / arr.length;
-        document.getElementById('avg').value = avg;
-        //console.log(avg);
-
-        //media
-        arr.sort((a, b) => a - b);
-        let lowMiddle = Math.floor((arr.length - 1) / 2);
-        let highMiddle = Math.ceil((arr.length - 1) / 2);
-        let median = (arr[lowMiddle] + arr[highMiddle]) / 2;
-        //console.log(median)
-        document.getElementById('media').value = median;
-
-        //max & min
-        var max = Math.max(...arr);
-        //console.log(max);
-        document.getElementById('max').value = max;
-        var min = Math.min(...arr);
-        document.getElementById('min').value = min;
-        //console.log(min);
-
-        //contar valores
-        var values = [],
-            prev;
-        var counts = [];
-        var sumcounts = [];
-        var fr = [];
-        var fra = [];
-        arr.sort();
-        //XI & FA
-        for (i = 0; i < arr.length; i++) {
-            if (arr[i] !== prev) {
-                values.push(arr[i]);
-                counts.push(1);
+            //se comprueba que los valores ingresados sean del tamaño necesitado, sino solo se usan los que entren en el tamaño
+            if (a.length > tamanio) {
+                document.getElementById('error').innerHTML = 'Valores ingresados superan el tamaño de la muestra, solo se usarán los valores solicitados.';
+                arr.length = tamanio;
+            } else if(a.length < tamanio){
+                document.getElementById('error').innerHTML = 'El tamaño de la muestra no es el mismo del arreglo. Favor de corregir.';
             } else {
-                counts[counts.length - 1]++;
+                document.getElementById('error').innerHTML = '';
             }
-            prev = arr[i];
+
+            //se agregan al array
+            for (var i = 0; i < arr.length; i++) {
+                arr[i] = a[i];
+            }
+            console.log(arr)
+
+            //se suman los valores
+            let sum = 0;
+            arr.forEach(function(numero) {
+                sum += numero;
+            })
+            //console.log(sum);
+            document.getElementById('sum').value = sum;
+
+            //average
+            let avg = sum / arr.length;
+            document.getElementById('avg').value = avg;
+            //console.log(avg);
+
+            //media
+            arr.sort((a, b) => a - b);
+            let lowMiddle = Math.floor((arr.length - 1) / 2);
+            let highMiddle = Math.ceil((arr.length - 1) / 2);
+            let median = (arr[lowMiddle] + arr[highMiddle]) / 2;
+            //console.log(median)
+            document.getElementById('media').value = median;
+
+            //max & min
+            var max = Math.max(...arr);
+            //console.log(max);
+            document.getElementById('max').value = max;
+            var min = Math.min(...arr);
+            document.getElementById('min').value = min;
+            //console.log(min);
+
+            //contar valores
+            var values = [],
+                prev;
+            var counts = [];
+            var sumcounts = [];
+            var fr = [];
+            var fra = [];
+            arr.sort();
+            //XI & FA
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i] !== prev) {
+                    values.push(arr[i]);
+                    counts.push(1);
+                } else {
+                    counts[counts.length - 1]++;
+                }
+                prev = arr[i];
+            }
+
+            //FREC. ABS.AC.
+            sumcounts = counts.map((elem, index) => counts.slice(0, index + 1).reduce((a, b) => a + b));
+            //console.log(sumcounts);
+
+            //limpia tabla
+            $("#table-body").children("tr").remove();
+            document.getElementById('fr').innerHTML = '';
+
+            //FREC. REL.
+            for (i = 0; i < values.length; i++) {
+                let fi = values[i] / tamanio;
+                let f = parseFloat(fi.toFixed(2));
+                fr.push(f);
+                document.getElementById('fr').innerHTML = 'Los valores de Frecuencia Relativa y Frecuencia Relativa Acumulada se han redondeado a 2 decimales.';
+            }
+            //FREC. REL. ABS.
+            fra = fr.map((elem, index) => fr.slice(0, index + 1).reduce((a, b) => a + b));
+            fra.map(function(b) {
+                return parseFloat(b).toFixed(1)
+            })
+            //fra = parseFloat(fra);
+            console.log(fra);
+
+            //CREA TABLA
+            for (i = 0; i < values.length; i++) {
+                var tr = '<tr style="text-align: center;"><td>' + values[i] + '</td><td>' + counts[i] + '</td><td>' + sumcounts[i] + '</td><td>' + fr[i] + '</td><td>' + fra[i] + '</td></tr>';
+                $("#table-body").append(tr)
+            }
+
+            //Varianza
+            var va = 0;
+            for(i=0; i<arr.length; i++){
+                va = va + Math.pow(arr[i] - median,2)
+            }
+            
+            va = va/(arr.length-1)
+
+            document.getElementById('varianza').value = parseFloat(va.toFixed(2));
+            document.getElementById('desvEstandar').value = parseFloat(Math.sqrt(va).toFixed(2));
+
+            //Moda
+            var maxCounts  = Math.max(...counts);
+            var indexModa = counts.findIndex(count => count === maxCounts)
+            console.log("Maximo: ",maxCounts);
+            console.log("Prueba: ",indexModa);
+            console.log(values[indexModa])
+            if(maxCounts === 1){
+                document.getElementById('moda').value = 'No hay Moda';    
+            } else {
+                document.getElementById('moda').value = values[indexModa];
+            }
         }
+        
+        
 
-        //FREC. ABS.AC.
-        sumcounts = counts.map((elem, index) => counts.slice(0, index + 1).reduce((a, b) => a + b));
-        //console.log(sumcounts);
-
-        //limpia tabla
-        $("#table-body").children("tr").remove();
-        document.getElementById('fr').innerHTML = '';
-
-        //FREC. REL.
-        for (i = 0; i < values.length; i++) {
-            let fi = values[i] / tamanio;
-            let f = parseFloat(fi.toFixed(2));
-            fr.push(f);
-            document.getElementById('fr').innerHTML = 'Los valores de Frecuencia Relativa y Frecuencia Relativa Acumulada se han redondeado a 2 decimales.';
-        }
-        //FREC. REL. ABS.
-        fra = fr.map((elem, index) => fr.slice(0, index + 1).reduce((a, b) => a + b));
-        fra.map(function(b) {
-            return parseFloat(b).toFixed(1)
-        })
-        //fra = parseFloat(fra);
-        console.log(fra);
-
-        //CREA TABLA
-        for (i = 0; i < values.length; i++) {
-            var tr = '<tr style="text-align: center;"><td>' + values[i] + '</td><td>' + counts[i] + '</td><td>' + sumcounts[i] + '</td><td>' + fr[i] + '</td><td>' + fra[i] + '</td></tr>';
-            $("#table-body").append(tr)
-        }
     }
 </script></html>
 
