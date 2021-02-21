@@ -1,10 +1,9 @@
 <h1 align="center">Tarea 2 👋</h1>
 <h2 align="center">Clase Métodos Cuantitativos</h2>
 
-## Estructura
+## Link a la página
 ```sh
-Front - index.html
-Back - main.js
+ https://qwn2203.github.io/Tarea2-metodos/
 ```
 ## Author
 
